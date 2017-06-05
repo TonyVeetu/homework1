@@ -41,24 +41,67 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <!-- get all project dependencies -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <!-- MainClass in mainfest make a executable jar -->
+                    <archive>
+                        <manifest>
+                            <mainClass>ru.bk.uteev.Main</mainClass>
+                        </manifest>
+                    </archive>
+
+                </configuration>
                 <executions>
                     <execution>
-                        <id>maven-assembly-plugin</id>
+                        <id>make-assembly</id>
+                        <!-- bind to the packaging phase -->
                         <phase>package</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.8</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>uteevbkru.Main</mainClass>
-                        </manifest>
-                    </archive>
+                    <proguardVersion>5.1</proguardVersion>
+                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
+                    <obfuscate>true</obfuscate>
+                    <options>
+                        <option>-allowaccessmodification</option>
+                        <option>-keep class ru.bk.uteev.uteev.HW1-jar-with-dependencies</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>5.1</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
             </plugin>
+
         </plugins>
 
     </build>
