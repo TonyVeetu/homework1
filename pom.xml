@@ -86,7 +86,6 @@
                     <obfuscate>true</obfuscate>
                     <options>
                         <option>-allowaccessmodification</option>
-                        <option>-keep class ru.bk.uteev.uteev.HW1-jar-with-dependencies</option>
                     </options>
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
